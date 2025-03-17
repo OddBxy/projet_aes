@@ -298,4 +298,3 @@ aes_inv_cipher(out, in, w);
 
 	return 0;
 }
-
