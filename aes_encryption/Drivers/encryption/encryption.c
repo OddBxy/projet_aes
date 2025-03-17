@@ -28,7 +28,28 @@ static uint8_t s_box[256] = {
 	0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16};// f
 
 
+static uint8_t Gf4x4[] = {0x02, 0x01, 0x01, 0x03, 0x03, 0x02, 0x01, 0x01, 0x01, 0x03, 0x02, 0x01, 0x01, 0x01, 0x03, 0x02};
 
+
+
+//helper functions
+uint8_t gmult(uint8_t a, uint8_t b) {
+
+	uint8_t p = 0, i = 0, hbs = 0;
+
+	for (i = 0; i < 8; i++) {
+		if (b & 1) {
+			p ^= a;
+		}
+
+		hbs = a & 0x80;
+		a <<= 1;
+		if (hbs) a ^= 0x1b; // 0000 0001 0001 1011
+		b >>= 1;
+	}
+
+	return (uint8_t)p;
+}
 
 
 
@@ -77,4 +98,32 @@ void shiftRows(uint8_t *buffer){
 
 	}
 }
+
+
+
+
+void mixColumns(uint8_t *buffer){
+
+	//multiplication matricielle
+	uint8_t result[16] = {0}; // Temporary result matrix
+
+	for (int col = 0; col < 4; col++) { // pour chaque colonne de buffer
+		for (int row = 0; row < 4; row++) { // pour chaque colonne de GF4x4
+
+			uint8_t sum_val = 0;
+			for (int k = 0; k < 4; k++) {
+				sum_val ^= gmult(Gf4x4[k * 4 + row], buffer[col * 4 + k]);
+			}
+			result[col * 4 + row] = sum_val;
+
+		}
+	}
+
+	// copie le resultat dans buffer
+	for (int i = 0; i < 16; i++) {
+		buffer[i] = result[i];
+	}
+
+}
+
 
