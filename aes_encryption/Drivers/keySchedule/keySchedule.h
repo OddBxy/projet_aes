@@ -12,5 +12,6 @@
 
 
 void rotWord(uint8_t *col);
+void singleWordSubBytes(uint8_t *col);
 
 #endif /* KEYSCHEDULE_KEYSCHEDULE_H_ */

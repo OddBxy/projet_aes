@@ -18,7 +18,13 @@ void rotWord(uint8_t *col){
 
     // Shift les elements
     for (int i = 0; i < 4; i++) {
-        col[j] = temp[(1+j) % 4];
+        col[i] = temp[(1+i) % 4];
     }
 
+}
+
+void singleWordSubBytes(uint8_t *col){
+	for(int i=0; i<4; i++){
+		col[i] = s_box[col[i]];
+	}
 }
