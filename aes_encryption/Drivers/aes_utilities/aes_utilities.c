@@ -59,10 +59,7 @@ void coef_add(uint8_t a[], uint8_t b[], uint8_t d[]) {
 
 
 void add_round_key(uint8_t *buffer, uint8_t *w, uint8_t r) {
-	for (int c = 0; c < 4; c++) {
-		buffer[4*0+c] = buffer[4*0+c]^w[4*4*r+4*c+0];
-		buffer[4*1+c] = buffer[4*1+c]^w[4*4*r+4*c+1];
-		buffer[4*2+c] = buffer[4*2+c]^w[4*4*r+4*c+2];
-		buffer[4*3+c] = buffer[4*3+c]^w[4*4*r+4*c+3];
+	for (int c = 0; c < 16; c++) {
+		buffer[c] ^= w[16*r + c];
 	}
 }

@@ -46,41 +46,35 @@ void newKey(uint8_t *key, uint8_t *result){
 	uint8_t len = 4*(10+1);
 	uint8_t Nk = 4;
 
-		for (i = 0; i < 16; i++) {
-			result[i] = key[i];
-		}
+	for (i = 0; i < 16; i++) {
+		result[i] = key[i];
+	}
 
-		for (i = Nk; i < len; i++) {
-			tmp[0] = result[4*(i-1)+0];
-			tmp[1] = result[4*(i-1)+1];
-			tmp[2] = result[4*(i-1)+2];
-			tmp[3] = result[4*(i-1)+3];
+	for (i = Nk; i < len; i++) {
+		tmp[0] = result[4*(i-1)+0];
+		tmp[1] = result[4*(i-1)+1];
+		tmp[2] = result[4*(i-1)+2];
+		tmp[3] = result[4*(i-1)+3];
 
-			if (i%Nk == 0) {
+		if (i%Nk == 0) {
 
-				rotWord(tmp);
-				subWord(tmp);
+			rotWord(tmp);
+			subWord(tmp);
 
-				//copying the ith word of rcon
-				uint8_t rcol[4];
-				for(int n=0; n<4;n++){
-					rcol[n] = rcon[(i-Nk) + n];
-				}
+			tmp[0] ^= rcon[4 * (i/Nk - 1)];
 
-				coef_add(tmp, rcol, tmp);
+		} else if (Nk > 6 && i%Nk == 4) {
 
-			} else if (Nk > 6 && i%Nk == 4) {
-
-				subWord(tmp);
-
-			}
-
-			result[4*i+0] = result[4*(i-Nk)+0]^tmp[0];
-			result[4*i+1] = result[4*(i-Nk)+1]^tmp[1];
-			result[4*i+2] = result[4*(i-Nk)+2]^tmp[2];
-			result[4*i+3] = result[4*(i-Nk)+3]^tmp[3];
+			subWord(tmp);
 
 		}
+
+		result[4*i+0] = result[4*(i-Nk)+0]^tmp[0];
+		result[4*i+1] = result[4*(i-Nk)+1]^tmp[1];
+		result[4*i+2] = result[4*(i-Nk)+2]^tmp[2];
+		result[4*i+3] = result[4*(i-Nk)+3]^tmp[3];
+
+	}
 
 }
 

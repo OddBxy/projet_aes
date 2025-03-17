@@ -11,23 +11,7 @@
 static uint8_t Gf4x4[] = {0x02, 0x01, 0x01, 0x03, 0x03, 0x02, 0x01, 0x01, 0x01, 0x03, 0x02, 0x01, 0x01, 0x01, 0x03, 0x02};
 
 
-
-//helper functions
-
-
-
 //functions definition
-/*void add_roundKey(uint8_t *buffer, uint8_t *roundKey){
-
-	for(int i=0; i<4; i++){
-		buffer[4*i + 0] = buffer[4*i + 0]^roundKey[4*i + 0];
-		buffer[4*i + 1] = buffer[4*i + 1]^roundKey[4*i + 1];
-		buffer[4*i + 2] = buffer[4*i + 2]^roundKey[4*i + 2];
-		buffer[4*i + 3] = buffer[4*i + 3]^roundKey[4*i + 3];
-	}
-}*/
-
-
 
 void subBytes(uint8_t *buffer){
 	for (int i = 0; i < 4; i++) {

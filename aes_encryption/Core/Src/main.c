@@ -1,27 +1,27 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2025 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file           : main.c
+ * @brief          : Main program body
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2025 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "decryption.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -62,6 +62,43 @@ static void MX_USB_PCD_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+int _write(int file, char *ptr, int len) {
+	int DataIdx;
+	for (DataIdx = 0; DataIdx < len; DataIdx++) {
+		//__io_putchar(*ptr++);
+		ITM_SendChar(*ptr++);
+	}
+	return len;
+}
+
+void aes_cipher(uint8_t *in, uint8_t *out, uint8_t *w) {
+
+	uint8_t state[16];
+
+	for (int i = 0; i < 16; i++) {
+		state[i] = in[i];
+
+	}
+
+	add_round_key(state, w, 0);
+
+	for (int i = 1; i < 10; i++) {
+		subBytes(state);
+		shiftRows(state);
+		mixColumns(state);
+		add_round_key(state, w, i);
+	}
+
+	subBytes(state);
+	shiftRows(state);
+	add_round_key(state, w, 10);
+
+	for (int i = 0; i < 16; i++) {
+		out[i] = state[i];
+
+	}
+
+}
 /* USER CODE END 0 */
 
 /**
@@ -70,7 +107,6 @@ static void MX_USB_PCD_Init(void);
   */
 int main(void)
 {
-
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -87,7 +123,7 @@ int main(void)
   /* Configure the system clock */
   SystemClock_Config();
 
-  /* Configure the peripherals common clocks */
+/* Configure the peripherals common clocks */
   PeriphCommonClock_Config();
 
   /* USER CODE BEGIN SysInit */
@@ -100,16 +136,52 @@ int main(void)
   MX_USB_PCD_Init();
   /* USER CODE BEGIN 2 */
 
+/*
+  uint8_t txt[] = {0x19, 0x3d, 0xe3, 0xbe, 0xa0, 0xf4, 0xe2, 0x2b, 0x9a, 0xc6, 0x8d, 0x2a, 0xe9, 0xf8, 0x48, 0x08 };
+  uint8_t k[] = {0xa0, 0xfa, 0xfe, 0x17, 0x88, 0x54, 0x2c, 0xb1, 0x23, 0xa3, 0x39, 0x39, 0x2a, 0x6c, 0x76, 0x05 };
+
+
+	subBytes(txt);
+	shiftRows(txt);
+	mixColumns(txt);
+	add_round_key(txt, k, 0);
+	for(int i=0; i<16; i+=4){
+		printf("%x %x %x %x\n", txt[i], txt[i+1], txt[i+2], txt[i+3]);
+	}
+*/
+
+	uint8_t txt[] = { 0x32, 0x43, 0xf6, 0xa8, 0x88, 0x5a, 0x30, 0x8d, 0x31,
+			0x31, 0x98, 0xa2, 0xe0, 0x37, 0x07, 0x34 };
+	uint8_t key[] = { 0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab,
+			0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c };
+	uint8_t *newk = malloc(174 * sizeof(uint8_t));
+
+	newKey(key, newk);
+
+//
+//	for(int i=0; i<174; i++){
+//		printf("%x %x %x %x\n", newk[i], newk[i+1], newk[i+2], newk[i+3]);
+//	}
+
+	uint8_t *out = malloc(16 * sizeof(uint8_t));
+
+	aes_cipher(txt, out, newk);
+
+	for(int i=0; i<16; i++){
+		printf(" %x ", out[i]);
+
+	}
+
+	printf("\n");
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+	while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
+	}
   /* USER CODE END 3 */
 }
 
@@ -337,11 +409,10 @@ static void MX_GPIO_Init(void)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
-  __disable_irq();
-  while (1)
-  {
-  }
+	/* User can add his own implementation to report the HAL error return state */
+	__disable_irq();
+	while (1) {
+	}
   /* USER CODE END Error_Handler_Debug */
 }
 

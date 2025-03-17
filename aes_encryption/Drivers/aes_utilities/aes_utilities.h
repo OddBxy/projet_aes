@@ -8,7 +8,8 @@
 #ifndef AES_UTILITIES_AES_UTILITIES_H_
 #define AES_UTILITIES_AES_UTILITIES_H_
 
-#include "main.h"
+
+#include "stdint.h"
 
 extern uint8_t s_box[256];
 uint8_t gmult(uint8_t a, uint8_t b);
