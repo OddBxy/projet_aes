@@ -9,5 +9,7 @@
 #define ENCRYPTION_ENCRYPTION_H_
 
 
+void add_roundKey(uint8_t *buffer, uint8_t *roundKey);
+
 
 #endif /* ENCRYPTION_ENCRYPTION_H_ */
