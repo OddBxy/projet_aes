@@ -10,6 +10,6 @@
 
 
 void add_roundKey(uint8_t *buffer, uint8_t *roundKey);
-
+void subBytes(uint8_t *buffer);
 
 #endif /* ENCRYPTION_ENCRYPTION_H_ */
