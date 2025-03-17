@@ -15,4 +15,7 @@ void subBytes(uint8_t *buffer);
 void shiftRows(uint8_t *buffer);
 void mixColumns(uint8_t *buffer);
 
+
+extern uint8_t s_box[256];
+
 #endif /* ENCRYPTION_ENCRYPTION_H_ */
