@@ -11,50 +11,16 @@
 const int Nb = 4;
 const int Nk =4;
 const int Nr = 10;
-
+/*
 uint8_t gadd(uint8_t a, uint8_t b) {
 	return a^b;
 }
 
 uint8_t gsub(uint8_t a, uint8_t b) {
 	return a^b;
-}
+}*/
 
-void coef_add(uint8_t a[], uint8_t b[], uint8_t d[]) {
-
-	d[0] = a[0]^b[0];
-	d[1] = a[1]^b[1];
-	d[2] = a[2]^b[2];
-	d[3] = a[3]^b[3];
-}
-
-
-
-
-
-void sub_word(uint8_t *w) {
-
-	uint8_t i;
-
-	for (i = 0; i < 4; i++) {
-		w[i] = s_box[w[i]];
-	}
-}
-
-void rot_word(uint8_t *w) {
-
-	uint8_t tmp;
-	uint8_t i;
-
-	tmp = w[0];
-
-	for (i = 0; i < 3; i++) {
-		w[i] = w[i+1];
-	}
-
-	w[3] = tmp;
-}
-
+/*
 uint8_t R[] = {0x02, 0x00, 0x00, 0x00};
 
 uint8_t * Rcon(uint8_t i) {
@@ -72,48 +38,7 @@ uint8_t * Rcon(uint8_t i) {
 
 	return R;
 }
-
-void aes_key_expansion(uint8_t *key, uint8_t *w) {
-
-	uint8_t tmp[4];
-	uint8_t i;
-	uint8_t len = Nb*(Nr+1);
-
-	for (i = 0; i < Nk; i++) {
-		w[4*i+0] = key[4*i+0];
-		w[4*i+1] = key[4*i+1];
-		w[4*i+2] = key[4*i+2];
-		w[4*i+3] = key[4*i+3];
-	}
-
-	for (i = Nk; i < len; i++) {
-		tmp[0] = w[4*(i-1)+0];
-		tmp[1] = w[4*(i-1)+1];
-		tmp[2] = w[4*(i-1)+2];
-		tmp[3] = w[4*(i-1)+3];
-
-		if (i%Nk == 0) {
-
-			rot_word(tmp);
-			sub_word(tmp);
-			coef_add(tmp, Rcon(i/Nk), tmp);
-
-		} else if (Nk > 6 && i%Nk == 4) {
-
-			sub_word(tmp);
-
-		}
-
-		w[4*i+0] = w[4*(i-Nk)+0]^tmp[0];
-		w[4*i+1] = w[4*(i-Nk)+1]^tmp[1];
-		w[4*i+2] = w[4*(i-Nk)+2]^tmp[2];
-		w[4*i+3] = w[4*(i-Nk)+3]^tmp[3];
-	}
-}
-
-
-
-
+*/
 
 static uint8_t inv_s_box[256] = {
 	// 0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f
@@ -135,23 +60,6 @@ static uint8_t inv_s_box[256] = {
 	0x17, 0x2b, 0x04, 0x7e, 0xba, 0x77, 0xd6, 0x26, 0xe1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0c, 0x7d  // f
 };
 
-uint8_t gmult(uint8_t a, uint8_t b) {
-
-	uint8_t p = 0, i = 0, hbs = 0;
-
-	for (i = 0; i < 8; i++) {
-		if (b & 1) {
-			p ^= a;
-		}
-
-		hbs = a & 0x80;
-		a <<= 1;
-		if (hbs) a ^= 0x1b; // 0000 0001 0001 1011
-		b >>= 1;
-	}
-
-	return (uint8_t)p;
-}
 
 void coef_mult(uint8_t *a, uint8_t *b, uint8_t *d) {
 
@@ -245,7 +153,7 @@ void aes_inv_cipher(uint8_t *in, uint8_t *out, uint8_t *w) {
 }
 
 
-//dans le main :
+/*
 
 int main(){
 uint8_t i;
@@ -281,3 +189,4 @@ aes_inv_cipher(out, in, w);
 
 	return 0;
 }
+*/
