@@ -82,21 +82,18 @@ void subBytes(uint8_t *buffer){
 
 //source d'erreurs
 void shiftRows(uint8_t *buffer){
-	for(int i=1; i<4; i++){		//commence a 1 car la premiere ligne est epargne
+    for(int i = 1; i < 4; i++) {   // commence a partir de la ligne 1 (ligne 0 epargne)
+        // Copie de la nieme ligne
+        uint8_t temp[4];
+        for (int j = 0; j < 4; j++) {
+            temp[j] = buffer[4*j + i];
+        }
 
-		for(int j=0; j<i; j++){
-			//swapping values
-			int temp = buffer[4*i]; //element a decaler
-
-			for(int k=0; k<3; k++){
-				buffer[k + 4*i] = buffer[k+4*i+1];
-			}
-			buffer[4*i + 4] = temp;
-
-		}
-
-
-	}
+        // Shift les elements
+        for (int j = 0; j < 4; j++) {
+            buffer[4*j+i] = temp[(i+j) % 4];
+        }
+    }
 }
 
 
