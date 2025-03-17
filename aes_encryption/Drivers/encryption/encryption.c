@@ -80,7 +80,6 @@ void subBytes(uint8_t *buffer){
 }
 
 
-//source d'erreurs
 void shiftRows(uint8_t *buffer){
     for(int i = 1; i < 4; i++) {   // commence a partir de la ligne 1 (ligne 0 epargne)
         // Copie de la nieme ligne

@@ -8,13 +8,11 @@
 #ifndef ENCRYPTION_ENCRYPTION_H_
 #define ENCRYPTION_ENCRYPTION_H_
 
+#include "main.h"
 
 void add_roundKey(uint8_t *buffer, uint8_t *roundKey);
 void subBytes(uint8_t *buffer);
-
-//source d'erreurs
 void shiftRows(uint8_t *buffer);
-
 void mixColumns(uint8_t *buffer);
 
 #endif /* ENCRYPTION_ENCRYPTION_H_ */
