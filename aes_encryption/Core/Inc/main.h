@@ -36,6 +36,7 @@ extern "C" {
 
 #include "encryption.h"
 #include "keySchedule.h"
+#include "decryption.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

@@ -99,6 +99,38 @@ void aes_cipher(uint8_t *in, uint8_t *out, uint8_t *w) {
 	}
 
 }
+
+//fct dechiffrement
+void aes_inv_cipher(uint8_t *out, uint8_t *dec, uint8_t *w) {
+
+	uint8_t state[16];
+
+
+	for (int i = 0; i < 16; i++) {
+
+			state[i] = out[i];
+		}
+
+
+	add_round_key(state, w, 10);
+
+	for (int r = 9; r > 0; r--) {
+		inv_shift_rows(state);
+		inv_sub_bytes(state);
+		add_round_key(state, w, r);
+		inv_mix_columns(state);
+	}
+
+	inv_shift_rows(state);
+	inv_sub_bytes(state);
+	add_round_key(state, w, 0);
+
+	for (int i = 0; i < 16; i++) {
+		dec[i] = state[i];
+
+	}
+
+}
 /* USER CODE END 0 */
 
 /**
@@ -167,10 +199,23 @@ int main(void)
 
 	aes_cipher(txt, out, newk);
 
+	printf(" Le message chiffre est :\n");
 	for(int i=0; i<16; i++){
 		printf(" %x ", out[i]);
 
 	}
+
+	printf("\n");
+
+	uint8_t *dec = malloc(16 * sizeof(uint8_t));
+
+	aes_inv_cipher(out,dec,newk);
+
+	printf("Le message dechiffre est :\n");
+	for(int i=0; i<16; i++){
+			printf(" %x ", dec[i]);
+
+		}
 
 	printf("\n");
   /* USER CODE END 2 */

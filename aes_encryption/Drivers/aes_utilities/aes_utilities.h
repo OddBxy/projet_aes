@@ -12,6 +12,7 @@
 #include "stdint.h"
 
 extern uint8_t s_box[256];
+extern uint8_t inv_s_box[256];
 uint8_t gmult(uint8_t a, uint8_t b);
 void coef_add(uint8_t a[], uint8_t b[], uint8_t d[]);
 void add_round_key(uint8_t *state, uint8_t *w, uint8_t r);
