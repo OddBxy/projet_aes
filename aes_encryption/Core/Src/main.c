@@ -112,15 +112,81 @@ int main(void)
   uint8_t txt[] = {0x19, 0x3d, 0xe3, 0xbe, 0xa0, 0xf4, 0xe2, 0x2b, 0x9a, 0xc6, 0x8d, 0x2a, 0xe9, 0xf8, 0x48, 0x08 };
   uint8_t k[] = {0xa0, 0xfa, 0xfe, 0x17, 0x88, 0x54, 0x2c, 0xb1, 0x23, 0xa3, 0x39, 0x39, 0x2a, 0x6c, 0x76, 0x05 };
 
-
-	subBytes(txt);
-	shiftRows(txt);
-	mixColumns(txt);
-	add_round_key(txt, k, 0);
-	for(int i=0; i<16; i+=4){
-		printf("%x %x %x %x\n", txt[i], txt[i+1], txt[i+2], txt[i+3]);
+	printf(" Le message original est :\n");
+	for(int i=0; i<16; i++){
+			printf(" %x ", txt[i]);
 	}
+	printf("\n\n");
+
+
+
+	//step by step Chiffrement
+	printf("Chiffrement :\n");
+	subBytes(txt);
+	printf("Apres subBytes :\n");
+	for(int i=0; i<16; i++){
+			printf(" %x ", txt[i]);
+	}
+	printf("\n");
+
+	shiftRows(txt);
+	printf("Apres shiftRows :\n");
+	for(int i=0; i<16; i++){
+			printf(" %x ", txt[i]);
+	}
+	printf("\n");
+
+	mixColumns(txt);
+	printf("Apres mixColumns :\n");
+	for(int i=0; i<16; i++){
+			printf(" %x ", txt[i]);
+	}
+	printf("\n");
+
+	add_round_key(txt, k, 0);
+	printf("Apres addRound key :\n");
+	for(int i=0; i<16; i++){
+			printf(" %x ", txt[i]);
+	}
+	printf("\n\n");
+
+
+	//step by step dechiffrement
+	printf("Dechiffrement :\n");
+	add_round_key(txt, k, 0);
+	printf("Apres addRound key :\n");
+	for(int i=0; i<16; i++){
+			printf(" %x ", txt[i]);
+	}
+	printf("\n");
+
+
+	inv_mix_columns(txt);
+	printf("Apres inv_mixColumns :\n");
+	for(int i=0; i<16; i++){
+			printf(" %x ", txt[i]);
+	}
+	printf("\n");
+
+	inv_shift_rows(txt);
+	printf("Apres inv_shiftRows :\n");
+	for(int i=0; i<16; i++){
+			printf(" %x ", txt[i]);
+	}
+	printf("\n");
+
+
+	inv_sub_bytes(txt);
+	printf("Apres inv_subBytes :\n");
+	for(int i=0; i<16; i++){
+			printf(" %x ", txt[i]);
+	}
+	printf("\n");
 */
+
+
+
+
 
 	uint8_t txt[] = { 0x32, 0x43, 0xf6, 0xa8, 0x88, 0x5a, 0x30, 0x8d, 0x31,
 			0x31, 0x98, 0xa2, 0xe0, 0x37, 0x07, 0x34 };
@@ -159,6 +225,7 @@ int main(void)
 			printf(" %x ", dec[i]);
 	}
 	printf("\n");
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
