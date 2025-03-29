@@ -71,66 +71,6 @@ int _write(int file, char *ptr, int len) {
 	return len;
 }
 
-void aes_cipher(uint8_t *in, uint8_t *out, uint8_t *w) {
-
-	uint8_t state[16];
-
-	for (int i = 0; i < 16; i++) {
-		state[i] = in[i];
-
-	}
-
-	add_round_key(state, w, 0);
-
-	for (int i = 1; i < 10; i++) {
-		subBytes(state);
-		shiftRows(state);
-		mixColumns(state);
-		add_round_key(state, w, i);
-	}
-
-	subBytes(state);
-	shiftRows(state);
-	add_round_key(state, w, 10);
-
-	for (int i = 0; i < 16; i++) {
-		out[i] = state[i];
-
-	}
-
-}
-
-//fct dechiffrement
-void aes_inv_cipher(uint8_t *out, uint8_t *dec, uint8_t *w) {
-
-	uint8_t state[16];
-
-
-	for (int i = 0; i < 16; i++) {
-
-			state[i] = out[i];
-		}
-
-
-	add_round_key(state, w, 10);
-
-	for (int r = 9; r > 0; r--) {
-		inv_shift_rows(state);
-		inv_sub_bytes(state);
-		add_round_key(state, w, r);
-		inv_mix_columns(state);
-	}
-
-	inv_shift_rows(state);
-	inv_sub_bytes(state);
-	add_round_key(state, w, 0);
-
-	for (int i = 0; i < 16; i++) {
-		dec[i] = state[i];
-
-	}
-
-}
 /* USER CODE END 0 */
 
 /**
@@ -186,37 +126,38 @@ int main(void)
 			0x31, 0x98, 0xa2, 0xe0, 0x37, 0x07, 0x34 };
 	uint8_t key[] = { 0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab,
 			0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c };
+
+	printf(" Le message original est :\n");
+	for(int i=0; i<16; i++){
+			printf(" %x ", txt[i]);
+	}
+	printf("\n");
+
+
+
+
+	//chiffrement
 	uint8_t *newk = malloc(174 * sizeof(uint8_t));
-
-	newKey(key, newk);
-
-//
-//	for(int i=0; i<174; i++){
-//		printf("%x %x %x %x\n", newk[i], newk[i+1], newk[i+2], newk[i+3]);
-//	}
+	key_expansion(key, newk);
 
 	uint8_t *out = malloc(16 * sizeof(uint8_t));
-
 	aes_cipher(txt, out, newk);
 
 	printf(" Le message chiffre est :\n");
 	for(int i=0; i<16; i++){
 		printf(" %x ", out[i]);
-
 	}
-
 	printf("\n");
 
-	uint8_t *dec = malloc(16 * sizeof(uint8_t));
 
+	//dechiffrement
+	uint8_t *dec = malloc(16 * sizeof(uint8_t));
 	aes_inv_cipher(out,dec,newk);
 
 	printf("Le message dechiffre est :\n");
 	for(int i=0; i<16; i++){
 			printf(" %x ", dec[i]);
-
-		}
-
+	}
 	printf("\n");
   /* USER CODE END 2 */
 

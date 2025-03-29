@@ -65,3 +65,37 @@ void mixColumns(uint8_t *buffer){
 }
 
 
+
+
+void aes_cipher(uint8_t *in, uint8_t *out, uint8_t *w) {
+
+	uint8_t state[16];
+
+	for (int i = 0; i < 16; i++) {
+		state[i] = in[i];
+
+	}
+
+	add_round_key(state, w, 0);
+
+	for (int i = 1; i < 10; i++) {
+		subBytes(state);
+		shiftRows(state);
+		mixColumns(state);
+		add_round_key(state, w, i);
+	}
+
+	subBytes(state);
+	shiftRows(state);
+	add_round_key(state, w, 10);
+
+	for (int i = 0; i < 16; i++) {
+		out[i] = state[i];
+
+	}
+
+}
+
+
+
+

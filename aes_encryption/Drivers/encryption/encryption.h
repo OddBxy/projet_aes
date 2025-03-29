@@ -14,6 +14,7 @@
 void subBytes(uint8_t *buffer);
 void shiftRows(uint8_t *buffer);
 void mixColumns(uint8_t *buffer);
+void aes_cipher(uint8_t *in, uint8_t *out, uint8_t *w);
 
 
 #endif /* ENCRYPTION_ENCRYPTION_H_ */

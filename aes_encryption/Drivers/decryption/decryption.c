@@ -82,3 +82,39 @@ void inv_sub_bytes(uint8_t *buffer2) {
 
 
 
+
+void aes_inv_cipher(uint8_t *out, uint8_t *dec, uint8_t *w) {
+
+	uint8_t state[16];
+
+
+	for (int i = 0; i < 16; i++) {
+
+			state[i] = out[i];
+		}
+
+
+	add_round_key(state, w, 10);
+
+	for (int r = 9; r > 0; r--) {
+		inv_shift_rows(state);
+		inv_sub_bytes(state);
+		add_round_key(state, w, r);
+		inv_mix_columns(state);
+	}
+
+	inv_shift_rows(state);
+	inv_sub_bytes(state);
+	add_round_key(state, w, 0);
+
+	for (int i = 0; i < 16; i++) {
+		dec[i] = state[i];
+
+	}
+
+}
+
+
+
+
+
